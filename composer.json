@@ -1,11 +1,11 @@
 {
-    "name": "konekt/pdf-invoice",
+    "name": "pyromn/pdf-invoice",
     "description": "Library to generate PDF invoices",
     "type": "library",
     "license": "GPL-2.0-or-later",
-    "keywords": ["invoice", "pdf", "konekt", "artkonekt"],
+    "keywords": ["invoice", "pdf"],
     "support": {
-        "source": "https://github.com/artkonekt/pdf-invoice"
+        "source": "https://github.com/pyromn/pdf-invoice"
     },
     "authors": [
         {
@@ -23,11 +23,11 @@
         "phpunit/phpunit": "8 - 9"
     },
     "autoload": {
-        "psr-4": { "Konekt\\PdfInvoice\\": "src/" }
+        "psr-4": { "Pyromn\\PdfInvoice\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": {
-            "Konekt\\PdfInvoice\\Tests\\": "tests/"
+            "Pyromn\\PdfInvoice\\Tests\\": "tests/"
         }
     }
 }
