@@ -110,7 +110,8 @@ class InvoicePrinter extends FPDF
     {
         $this->language = $language;
         include dirname(__DIR__) . '/inc/languages/' . $language . '.inc';
-        $this->lang = $language;
+        /** @var array $lang */
+        $this->lang = $lang;
     }
 
     private function setDocumentSize($dsize)
