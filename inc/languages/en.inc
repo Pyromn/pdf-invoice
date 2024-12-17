@@ -1,12 +1,12 @@
 <?php
-    $lang['number']   = 'Reference';
+    $lang['number']   = 'Order number';
     $lang['date']     = 'Billing date';
     $lang['time']     = 'Billing time';
     $lang['due']      = 'Due date';
-    $lang['to']       = 'Billing to';
-    $lang['from']     = 'Billing from';
+    $lang['to']       = 'Customer';
+    $lang['from']     = 'Seller';
     $lang['product']  = 'Product';
-    $lang['qty']      = 'Qty';
+    $lang['qty']      = 'Quantity';
     $lang['price']    = 'Price';
     $lang['discount'] = 'Discount';
     $lang['vat']      = 'Vat';
