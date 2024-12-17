@@ -9,7 +9,7 @@
  * @since       2017-12-15
  */
 
-namespace Konekt\PdfInvoice\Tests;
+namespace Pyromn\PdfInvoice\Tests;
 
 use Konekt\PdfInvoice\InvoicePrinter;
 use PHPUnit\Framework\TestCase;

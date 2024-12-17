@@ -11,7 +11,7 @@
  * @since       2017-12-15
  */
 
-namespace Konekt\PdfInvoice;
+namespace Pyromn\PdfInvoice;
 
 use FPDF;
 
@@ -110,7 +110,7 @@ class InvoicePrinter extends FPDF
     {
         $this->language = $language;
         include dirname(__DIR__) . '/inc/languages/' . $language . '.inc';
-        $this->lang = $lang;
+        $this->lang = $language;
     }
 
     private function setDocumentSize($dsize)

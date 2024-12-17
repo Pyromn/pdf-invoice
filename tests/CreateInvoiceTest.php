@@ -1,6 +1,6 @@
 <?php
 
-namespace Konekt\PdfInvoice\Tests;
+namespace Pyromn\PdfInvoice\Tests;
 
 use Konekt\PdfInvoice\InvoicePrinter;
 use PHPUnit\Framework\TestCase;
