@@ -2,14 +2,14 @@
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/artkonekt/pdf-invoice/tests.yml?branch=master&style=flat-square)](https://github.com/artkonekt/pdf-invoice/actions?query=workflow%3Atests)
 [![StyleCI](https://styleci.io/repos/113850945/shield?branch=master)](https://styleci.io/repos/113850945)
-[![Packagist Stable Version](https://img.shields.io/packagist/v/konekt/pdf-invoice.svg?style=flat-square&label=stable)](https://packagist.org/packages/konekt/pdf-invoice)
-[![Packagist downloads](https://img.shields.io/packagist/dt/konekt/pdf-invoice.svg?style=flat-square)](https://packagist.org/packages/konekt/pdf-invoice)
+[![Packagist Stable Version](https://img.shields.io/packagist/v/konekt/pdf-invoice.svg?style=flat-square&label=stable)](https://packagist.org/packages/pyromn/pdf-invoice)
+[![Packagist downloads](https://img.shields.io/packagist/dt/konekt/pdf-invoice.svg?style=flat-square)](https://packagist.org/packages/pyromn/pdf-invoice)
 [![GPL Software License](https://img.shields.io/badge/license-GPL-blue.svg?style=flat-square)](LICENSE)
 
-This is a streamlined fork of [pdf-invoicr](https://github.com/farjadtahir/pdf-invoicr).
+This is a streamlined fork of [pdf-invoice](https://github.com/artkonekt/pdf-invoice).
 
 Changes:
-- PHP 7.3 - 8.2 Support
+- PHP 7.3 - 8.3 Support
 - PSR-4 compatible
 - Available as composer package
 - Dependencies are coming via composer
@@ -49,7 +49,7 @@ might use it for payment or shipping information or any other content needed.
 ## Installation
 
 ```bash
-composer require konekt/pdf-invoice
+composer require pyromn/pdf-invoice
 ```
 
 ## Examples
