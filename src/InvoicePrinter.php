@@ -17,7 +17,7 @@ use tFPDF;
 
 class InvoicePrinter extends tFPDF
 {
-    public const ICONV_CHARSET_INPUT = 'UTF-8';
+    public const CHARSET_INPUT = 'UTF-8';
 
     public const INVOICE_SIZE_LEGAL = 'legal';
     public const INVOICE_SIZE_LETTER = 'letter';
@@ -457,7 +457,7 @@ class InvoicePrinter extends tFPDF
         $this->SetTextColor(0, 0, 0);
         $this->SetFont($this->font, 'B', 20);
         if (isset($this->title) and !empty($this->title)) {
-            $this->Cell(0, 5, mb_strtoupper($this->title, self::ICONV_CHARSET_INPUT), 0, 1, 'R');
+            $this->Cell(0, 5, mb_strtoupper($this->title, self::CHARSET_INPUT), 0, 1, 'R');
         }
         $this->SetFont($this->font, '', 9);
         $this->Ln(5);
@@ -467,13 +467,13 @@ class InvoicePrinter extends tFPDF
         $this->SetFont($this->font, 'B', 9);
         $positionX = $this->document['w'] - $this->margins['l'] - $this->margins['r']
                      - max(
-                         $this->GetStringWidth(mb_strtoupper($this->lang['number'], self::ICONV_CHARSET_INPUT)),
-                         $this->GetStringWidth(mb_strtoupper($this->lang['date'], self::ICONV_CHARSET_INPUT)),
-                         $this->GetStringWidth(mb_strtoupper($this->lang['due'], self::ICONV_CHARSET_INPUT))
+                         $this->GetStringWidth(mb_strtoupper($this->lang['number'], self::CHARSET_INPUT)),
+                         $this->GetStringWidth(mb_strtoupper($this->lang['date'], self::CHARSET_INPUT)),
+                         $this->GetStringWidth(mb_strtoupper($this->lang['due'], self::CHARSET_INPUT))
                      )
                      - max(
-                         $this->GetStringWidth(mb_strtoupper((string)$this->reference, self::ICONV_CHARSET_INPUT)),
-                         $this->GetStringWidth(mb_strtoupper((string)$this->date, self::ICONV_CHARSET_INPUT))
+                         $this->GetStringWidth(mb_strtoupper((string)$this->reference, self::CHARSET_INPUT)),
+                         $this->GetStringWidth(mb_strtoupper((string)$this->date, self::CHARSET_INPUT))
                      );
 
         //Number
@@ -483,7 +483,7 @@ class InvoicePrinter extends tFPDF
             $this->Cell(
                 32,
                 $lineheight,
-                mb_strtoupper($this->lang['number'], self::ICONV_CHARSET_INPUT) . ':',
+                mb_strtoupper($this->lang['number'], self::CHARSET_INPUT) . ':',
                 0,
                 0,
                 'L'
@@ -496,7 +496,7 @@ class InvoicePrinter extends tFPDF
         $this->Cell($positionX, $lineheight);
         $this->SetFont($this->font, 'B', 9);
         $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
-        $this->Cell(32, $lineheight, mb_strtoupper($this->lang['date'], self::ICONV_CHARSET_INPUT) . ':', 0, 0, 'L');
+        $this->Cell(32, $lineheight, mb_strtoupper($this->lang['date'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
         $this->SetTextColor(50, 50, 50);
         $this->SetFont($this->font, '', 9);
         $this->Cell(0, $lineheight, $this->date, 0, 1, 'R');
@@ -509,7 +509,7 @@ class InvoicePrinter extends tFPDF
             $this->Cell(
                 32,
                 $lineheight,
-                mb_strtoupper($this->lang['time'], self::ICONV_CHARSET_INPUT) . ':',
+                mb_strtoupper($this->lang['time'], self::CHARSET_INPUT) . ':',
                 0,
                 0,
                 'L'
@@ -523,7 +523,7 @@ class InvoicePrinter extends tFPDF
             $this->Cell($positionX, $lineheight);
             $this->SetFont($this->font, 'B', 9);
             $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
-            $this->Cell(32, $lineheight, mb_strtoupper($this->lang['due'], self::ICONV_CHARSET_INPUT) . ':', 0, 0, 'L');
+            $this->Cell(32, $lineheight, mb_strtoupper($this->lang['due'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
             $this->SetTextColor(50, 50, 50);
             $this->SetFont($this->font, '', 9);
             $this->Cell(0, $lineheight, $this->due, 0, 1, 'R');
@@ -534,7 +534,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell($positionX, $lineheight);
                 $this->SetFont($this->font, 'B', 9);
                 $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
-                $this->Cell(32, $lineheight, mb_strtoupper($customHeader['title'], self::ICONV_CHARSET_INPUT) . ':', 0, 0, 'L');
+                $this->Cell(32, $lineheight, mb_strtoupper($customHeader['title'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
                 $this->SetTextColor(50, 50, 50);
                 $this->SetFont($this->font, '', 9);
                 $this->Cell(0, $lineheight, $customHeader['content'], 0, 1, 'R');
@@ -569,8 +569,8 @@ class InvoicePrinter extends tFPDF
 
             if ($this->display_tofrom === true) {
                 if ($this->displayToFromHeaders === true) {
-                    $this->Cell($width, $lineheight, mb_strtoupper($this->lang['from'], self::ICONV_CHARSET_INPUT), 0, 0, 'L');
-                    $this->Cell(0, $lineheight, mb_strtoupper($this->lang['to'], self::ICONV_CHARSET_INPUT), 0, 0, 'L');
+                    $this->Cell($width, $lineheight, mb_strtoupper($this->lang['from'], self::CHARSET_INPUT), 0, 0, 'L');
+                    $this->Cell(0, $lineheight, mb_strtoupper($this->lang['to'], self::CHARSET_INPUT), 0, 0, 'L');
                     $this->Ln(7);
                     $this->SetLineWidth(0.4);
                     $this->Line($this->margins['l'], $this->GetY(), $this->margins['l'] + $width - 10, $this->GetY());
@@ -617,7 +617,7 @@ class InvoicePrinter extends tFPDF
             $this->Cell(
                 $this->firstColumnWidth,
                 10,
-                mb_strtoupper($this->lang['product'], self::ICONV_CHARSET_INPUT),
+                mb_strtoupper($this->lang['product'], self::CHARSET_INPUT),
                 0,
                 0,
                 'L',
@@ -629,7 +629,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell(
                     $width_other,
                     10,
-                    mb_strtoupper($this->lang['qty'], self::ICONV_CHARSET_INPUT),
+                    mb_strtoupper($this->lang['qty'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -641,7 +641,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell(
                     $width_other,
                     10,
-                    mb_strtoupper($this->lang['vat'], self::ICONV_CHARSET_INPUT),
+                    mb_strtoupper($this->lang['vat'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -653,7 +653,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell(
                     $width_other,
                     10,
-                    mb_strtoupper($this->lang['price'], self::ICONV_CHARSET_INPUT),
+                    mb_strtoupper($this->lang['price'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -665,7 +665,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell(
                     $width_other,
                     10,
-                    mb_strtoupper($this->lang['discount'], self::ICONV_CHARSET_INPUT),
+                    mb_strtoupper($this->lang['discount'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -678,7 +678,7 @@ class InvoicePrinter extends tFPDF
                 $this->Cell(
                     $width_other,
                     10,
-                    mb_strtoupper($this->lang['total'], self::ICONV_CHARSET_INPUT),
+                    mb_strtoupper($this->lang['total'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -900,7 +900,7 @@ class InvoicePrinter extends tFPDF
 
         //Badge
         if ($this->badge) {
-            $badge = ' ' . mb_strtoupper($this->badge, self::ICONV_CHARSET_INPUT) . ' ';
+            $badge = ' ' . mb_strtoupper($this->badge, self::CHARSET_INPUT) . ' ';
             $resetX = $this->getX();
             $resetY = $this->getY();
             $this->setXY($badgeX, $badgeY + ($this->totalsAlignment == 'horizontal' ? 25 : 15));
@@ -910,7 +910,7 @@ class InvoicePrinter extends tFPDF
             $this->SetFont($this->font, 'b', 15);
             $this->Rotate(10, $this->getX(), $this->getY());
             $this->Rect($this->GetX(), $this->GetY(), $this->GetStringWidth($badge) + 2, 10);
-            $this->Write(10, mb_strtoupper($badge, self::ICONV_CHARSET_INPUT));
+            $this->Write(10, mb_strtoupper($badge, self::CHARSET_INPUT));
             $this->Rotate(0);
             if ($resetY > $this->getY() + 20) {
                 $this->setXY($resetX, $resetY);
@@ -924,7 +924,7 @@ class InvoicePrinter extends tFPDF
             if ($text[0] == 'title') {
                 $this->SetFont($this->font, 'b', 9);
                 $this->SetTextColor(50, 50, 50);
-                $this->Cell(0, 10, mb_strtoupper($text[1], self::ICONV_CHARSET_INPUT), 0, 0, 'L', 0);
+                $this->Cell(0, 10, mb_strtoupper($text[1], self::CHARSET_INPUT), 0, 0, 'L', 0);
                 $this->Ln();
                 $this->SetLineWidth(0.3);
                 $this->SetDrawColor($this->color[0], $this->color[1], $this->color[2]);
@@ -954,7 +954,7 @@ class InvoicePrinter extends tFPDF
         $this->Cell(
             0,
             10,
-            iconv('UTF-8', 'ISO-8859-1', $this->lang['page']) . ' ' . $this->PageNo() . ' ' . $this->lang['page_of'] . ' {nb}',
+            $this->lang['page'] . ' ' . $this->PageNo() . ' ' . $this->lang['page_of'] . ' {nb}',
             0,
             0,
             'R'
