@@ -74,6 +74,9 @@ class InvoicePrinter extends tFPDF
     public $language;
     public $firstColumnWidth;
     public $title;
+    public $itemsDescription;
+    public $voucherDescription;
+    public $voucherDescription2;
     public $quantityField;
     public $priceField;
     public $totalField;
@@ -607,9 +610,11 @@ class InvoicePrinter extends tFPDF
                 $this->Ln(-10);
             }
         }
+
+        $width_other = $this->getOtherColumnsWith();
+
         //Table header
         if (!isset($this->productsEnded)) {
-            $width_other = $this->getOtherColumnsWith();
             $this->SetTextColor(50, 50, 50);
             $this->Ln(12);
             $this->SetFont($this->font, 'B', 9);
@@ -691,6 +696,19 @@ class InvoicePrinter extends tFPDF
             $this->Line($this->margins['l'], $this->GetY(), $this->document['w'] - $this->margins['r'], $this->GetY());
             $this->Ln(2);
         } else {
+            $this->Ln(12);
+        }
+
+        if ($this->itemsDescription) {
+            $this->Cell(
+                $width_other,
+                10,
+                mb_strtoupper($this->itemsDescription, self::CHARSET_INPUT),
+                0,
+                0,
+                'L',
+                0
+            );
             $this->Ln(12);
         }
     }
@@ -897,6 +915,33 @@ class InvoicePrinter extends tFPDF
         $this->productsEnded = true;
         $this->Ln();
         $this->Ln(3);
+
+        if ($this->voucherDescription) {
+            $this->Cell(
+                $width_other,
+                10,
+                mb_strtoupper($this->voucherDescription, self::CHARSET_INPUT),
+                0,
+                0,
+                'L',
+                0
+            );
+
+            if ($this->voucherDescription2) {
+                $this->Ln(6);
+                $this->Cell(
+                    $width_other,
+                    10,
+                    mb_strtoupper($this->voucherDescription2, self::CHARSET_INPUT),
+                    0,
+                    0,
+                    'L',
+                    0
+                );
+            }
+
+            $this->Ln(12);
+        }
 
         //Badge
         if ($this->badge) {
