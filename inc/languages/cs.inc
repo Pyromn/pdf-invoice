@@ -3,8 +3,9 @@
     $lang['date']     = 'Datum vystavení';
     $lang['time']     = 'Čas vystavení';
     $lang['due']      = 'Datum splatnosti';
-    $lang['to']       = 'Zákazník';
-    $lang['from']     = 'Prodejce';
+    $lang['due_fill'] = 'Datum uskutečnění plnění';
+    $lang['to']       = 'Odběratel';
+    $lang['from']     = 'Dodavatel';
     $lang['product']  = 'Produkt';
     $lang['qty']      = 'Množství';
     $lang['price']    = 'Cena';

@@ -58,6 +58,7 @@ class InvoicePrinter extends tFPDF
     public $date;
     public $time;
     public $due;
+    public $dueFill;
     public $from;
     public $to;
     public $items;
@@ -233,6 +234,11 @@ class InvoicePrinter extends tFPDF
     public function setDue($date)
     {
         $this->due = $date;
+    }
+
+    public function setDueFill($date)
+    {
+        $this->dueFill = $date;
     }
 
     public function setLogo($logo = 0, $maxWidth = 0, $maxHeight = 0)
@@ -458,7 +464,7 @@ class InvoicePrinter extends tFPDF
 
         //Title
         $this->SetTextColor(0, 0, 0);
-        $this->SetFont($this->font, 'B', 20);
+        $this->SetFont($this->font, 'B', 12);
         if (isset($this->title) and !empty($this->title)) {
             $this->Cell(0, 5, mb_strtoupper($this->title, self::CHARSET_INPUT), 0, 1, 'R');
         }
@@ -497,8 +503,8 @@ class InvoicePrinter extends tFPDF
         }
         //Date
         $this->Cell($positionX, $lineheight);
-        $this->SetFont($this->font, 'B', 9);
-        $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
+        $this->SetFont($this->font, '', 9);
+        //$this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
         $this->Cell(32, $lineheight, mb_strtoupper($this->lang['date'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
         $this->SetTextColor(50, 50, 50);
         $this->SetFont($this->font, '', 9);
@@ -507,8 +513,8 @@ class InvoicePrinter extends tFPDF
         //Time
         if (!empty($this->time)) {
             $this->Cell($positionX, $lineheight);
-            $this->SetFont($this->font, 'B', 9);
-            $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
+            $this->SetFont($this->font, '', 9);
+            //$this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
             $this->Cell(
                 32,
                 $lineheight,
@@ -524,12 +530,22 @@ class InvoicePrinter extends tFPDF
         //Due date
         if (!empty($this->due)) {
             $this->Cell($positionX, $lineheight);
-            $this->SetFont($this->font, 'B', 9);
-            $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
+            $this->SetFont($this->font, '', 9);
+            //$this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
             $this->Cell(32, $lineheight, mb_strtoupper($this->lang['due'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
             $this->SetTextColor(50, 50, 50);
             $this->SetFont($this->font, '', 9);
             $this->Cell(0, $lineheight, $this->due, 0, 1, 'R');
+        }
+        //Due date fill
+        if (!empty($this->dueFill)) {
+            $this->Cell($positionX, $lineheight);
+            $this->SetFont($this->font, '', 9);
+            //$this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
+            $this->Cell(32, $lineheight, mb_strtoupper($this->lang['due_fill'], self::CHARSET_INPUT) . ':', 0, 0, 'L');
+            $this->SetTextColor(50, 50, 50);
+            $this->SetFont($this->font, '', 9);
+            $this->Cell(0, $lineheight, $this->dueFill, 0, 1, 'R');
         }
         //Custom Headers
         if (count($this->customHeaders) > 0) {
