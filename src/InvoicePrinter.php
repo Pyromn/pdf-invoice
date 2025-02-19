@@ -483,12 +483,12 @@ class InvoicePrinter extends tFPDF
                      - max(
                          $this->GetStringWidth(mb_strtoupper((string)$this->reference, self::CHARSET_INPUT)),
                          $this->GetStringWidth(mb_strtoupper((string)$this->date, self::CHARSET_INPUT))
-                     );
+                     ) - 25;
 
         //Number
         if (!empty($this->reference)) {
             $this->Cell($positionX, $lineheight);
-            $this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
+            //$this->SetTextColor($this->color[0], $this->color[1], $this->color[2]);
             $this->Cell(
                 32,
                 $lineheight,
@@ -566,7 +566,7 @@ class InvoicePrinter extends tFPDF
             if (($this->margins['t'] + $dimensions) > $this->GetY()) {
                 $this->SetY($this->margins['t'] + $dimensions + 5);
             } else {
-                $this->SetY($this->GetY() + 10);
+                $this->SetY($this->GetY() + 2);
             }
             $this->Ln(5);
             $this->SetFillColor($this->color[0], $this->color[1], $this->color[2]);
@@ -932,7 +932,29 @@ class InvoicePrinter extends tFPDF
         $this->Ln();
         $this->Ln(3);
 
+        //Badge
+        if ($this->badge) {
+            $badge = ' ' . mb_strtoupper($this->badge, self::CHARSET_INPUT) . ' ';
+            $resetX = $this->getX();
+            $resetY = $this->getY();
+            $this->setXY($badgeX + 35, $badgeY + ($this->totalsAlignment == 'horizontal' ? 25 : 15));
+            $this->SetLineWidth(0.4);
+            $this->SetDrawColor($this->badgeColor[0], $this->badgeColor[1], $this->badgeColor[2]);
+            $this->setTextColor($this->badgeColor[0], $this->badgeColor[1], $this->badgeColor[2]);
+            $this->SetFont($this->font, 'b', 15);
+            $this->Rotate(10, $this->getX(), $this->getY());
+            $this->Rect($this->GetX(), $this->GetY(), $this->GetStringWidth($badge) + 2, 10);
+            $this->Write(10, mb_strtoupper($badge, self::CHARSET_INPUT));
+            $this->Rotate(0);
+            if ($resetY > $this->getY() + 20) {
+                $this->setXY($resetX, $resetY);
+            } else {
+                $this->Ln(18);
+            }
+        }
+
         if ($this->voucherDescription) {
+            $this->SetFont($this->font, 'b', 8);
             $this->Cell(
                 $width_other,
                 10,
@@ -958,27 +980,11 @@ class InvoicePrinter extends tFPDF
 
             $this->Ln(12);
         }
+    }
 
-        //Badge
-        if ($this->badge) {
-            $badge = ' ' . mb_strtoupper($this->badge, self::CHARSET_INPUT) . ' ';
-            $resetX = $this->getX();
-            $resetY = $this->getY();
-            $this->setXY($badgeX, $badgeY + ($this->totalsAlignment == 'horizontal' ? 25 : 15));
-            $this->SetLineWidth(0.4);
-            $this->SetDrawColor($this->badgeColor[0], $this->badgeColor[1], $this->badgeColor[2]);
-            $this->setTextColor($this->badgeColor[0], $this->badgeColor[1], $this->badgeColor[2]);
-            $this->SetFont($this->font, 'b', 15);
-            $this->Rotate(10, $this->getX(), $this->getY());
-            $this->Rect($this->GetX(), $this->GetY(), $this->GetStringWidth($badge) + 2, 10);
-            $this->Write(10, mb_strtoupper($badge, self::CHARSET_INPUT));
-            $this->Rotate(0);
-            if ($resetY > $this->getY() + 20) {
-                $this->setXY($resetX, $resetY);
-            } else {
-                $this->Ln(18);
-            }
-        }
+    public function Footer()
+    {
+        $this->SetY(-$this->margins['t'] - 13);
 
         //Add information
         foreach ($this->addText as $text) {
@@ -1004,11 +1010,7 @@ class InvoicePrinter extends tFPDF
                 $this->Ln(4);
             }
         }
-    }
 
-    public function Footer()
-    {
-        $this->SetY(-$this->margins['t']);
         $this->SetFont($this->font, '', 8);
         $this->SetTextColor(50, 50, 50);
         $this->Cell(0, 10, $this->footernote, 0, 0, 'L');
