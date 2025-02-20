@@ -83,6 +83,7 @@ class InvoicePrinter extends tFPDF
     public $totalField;
     public $discountField;
     public $vatField;
+    public $vatPriceField;
     public $productsEnded;
     protected $displayToFromHeaders = true;
     protected $columns = 1;
@@ -335,7 +336,7 @@ class InvoicePrinter extends tFPDF
         ];
     }
 
-    public function addItem($item, $description, $quantity, $vat, $price, $discount, $total)
+    public function addItem($item, $description, $quantity, $vat, $vatPrice, $price, $discount, $total)
     {
         $itemColumns = 1;
 
@@ -356,6 +357,16 @@ class InvoicePrinter extends tFPDF
                 $p['vat'] = $this->price($vat);
             }
             $this->vatField = true;
+
+            $itemColumns++;
+        }
+
+        if ($vatPrice !== false) {
+            $p['vatPrice'] = $vatPrice;
+            if (is_numeric($vatPrice)) {
+                $p['vatPrice'] = $this->price($vatPrice);
+            }
+            $this->vatPriceField = true;
 
             $itemColumns++;
         }
@@ -657,18 +668,6 @@ class InvoicePrinter extends tFPDF
                     0
                 );
             }
-            if (isset($this->vatField)) {
-                $this->Cell($this->columnSpacing, 10, '', 0, 0, 'L', 0);
-                $this->Cell(
-                    $width_other,
-                    10,
-                    mb_strtoupper($this->lang['vat'], self::CHARSET_INPUT),
-                    0,
-                    0,
-                    'C',
-                    0
-                );
-            }
             if (isset($this->priceField)) {
                 $this->Cell($this->columnSpacing, 10, '', 0, 0, 'L', 0);
                 $this->Cell(
@@ -687,6 +686,30 @@ class InvoicePrinter extends tFPDF
                     $width_other,
                     10,
                     mb_strtoupper($this->lang['discount'], self::CHARSET_INPUT),
+                    0,
+                    0,
+                    'C',
+                    0
+                );
+            }
+            if (isset($this->vatField)) {
+                $this->Cell($this->columnSpacing, 10, '', 0, 0, 'L', 0);
+                $this->Cell(
+                    $width_other,
+                    10,
+                    mb_strtoupper($this->lang['vat'], self::CHARSET_INPUT),
+                    0,
+                    0,
+                    'C',
+                    0
+                );
+            }
+            if (isset($this->vatPriceField)) {
+                $this->Cell($this->columnSpacing, 10, '', 0, 0, 'L', 0);
+                $this->Cell(
+                    $width_other,
+                    10,
+                    mb_strtoupper($this->lang['vat'], self::CHARSET_INPUT),
                     0,
                     0,
                     'C',
@@ -751,7 +774,7 @@ class InvoicePrinter extends tFPDF
                         $item['description'],
                         0,
                         'L',
-                        1
+                        0
                     );
                     $descriptionHeight = $calculateHeight->getY() + $cellHeight + 2;
                     $pageHeight = $this->document['h'] - $this->GetY() - $this->margins['t'] - $this->margins['t'] - $descriptionHeight;
@@ -763,7 +786,7 @@ class InvoicePrinter extends tFPDF
                 $this->SetFont($this->font, 'b', 8);
                 $this->SetTextColor(50, 50, 50);
                 $this->SetFillColor($bgcolor, $bgcolor, $bgcolor);
-                $this->Cell(1, $cHeight, '', 0, 0, 'L', 1);
+                $this->Cell(1, $cHeight, '', 0, 0, 'L', 0);
                 $x = $this->GetX();
                 $this->Cell(
                     $this->firstColumnWidth,
@@ -772,7 +795,7 @@ class InvoicePrinter extends tFPDF
                     0,
                     0,
                     'L',
-                    1
+                    0
                 );
                 if ($item['description']) {
                     $resetX = $this->GetX();
@@ -786,17 +809,17 @@ class InvoicePrinter extends tFPDF
                         $item['description'],
                         0,
                         'L',
-                        1
+                        0
                     );
                     //Calculate Height
                     $newY = $this->GetY();
                     $cHeight = $newY - $resetY + 2;
                     //Make our spacer cell the same height
                     $this->SetXY($x - 1, $resetY);
-                    $this->Cell(1, $cHeight, '', 0, 0, 'L', 1);
+                    $this->Cell(1, $cHeight, '', 0, 0, 'L', 0);
                     //Draw empty cell
                     $this->SetXY($x, $newY);
-                    $this->Cell($this->firstColumnWidth, 2, '', 0, 0, 'L', 1);
+                    $this->Cell($this->firstColumnWidth, 2, '', 0, 0, 'L', 0);
                     $this->SetXY($resetX, $resetY);
                 }
                 $this->SetTextColor(50, 50, 50);
@@ -805,25 +828,17 @@ class InvoicePrinter extends tFPDF
                 if (isset($this->quantityField)) {
                     $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
                     if (isset($item['quantity'])) {
-                        $this->Cell($width_other, $cHeight, $item['quantity'], 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, $item['quantity'], 0, 0, 'C', 0);
                     } else {
-                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 1);
-                    }
-                }
-                if (isset($this->vatField)) {
-                    $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
-                    if (isset($item['vat'])) {
-                        $this->Cell($width_other, $cHeight, $item['vat'], 0, 0, 'C', 1);
-                    } else {
-                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 0);
                     }
                 }
                 if (isset($this->priceField)) {
                     $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
                     if (isset($item['price'])) {
-                        $this->Cell($width_other, $cHeight, $item['price'], 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, $item['price'], 0, 0, 'C', 0);
                     } else {
-                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 0);
                     }
                 }
                 if (isset($this->discountField)) {
@@ -834,12 +849,28 @@ class InvoicePrinter extends tFPDF
                         $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 1);
                     }
                 }
+                if (isset($this->vatField)) {
+                    $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
+                    if (isset($item['vat'])) {
+                        $this->Cell($width_other, $cHeight, $item['vat'], 0, 0, 'C', 0);
+                    } else {
+                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 0);
+                    }
+                }
+                if (isset($this->vatPriceField)) {
+                    $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
+                    if (isset($item['vatPrice'])) {
+                        $this->Cell($width_other, $cHeight, $item['vatPrice'], 0, 0, 'C', 0);
+                    } else {
+                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 0);
+                    }
+                }
                 if (isset($this->totalField)) {
                     $this->Cell($this->columnSpacing, $cHeight, '', 0, 0, 'L', 0);
                     if (isset($item['total'])) {
-                        $this->Cell($width_other, $cHeight, $item['total'], 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, $item['total'], 0, 0, 'C', 0);
                     } else {
-                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 1);
+                        $this->Cell($width_other, $cHeight, '', 0, 0, 'C', 0);
                     }
                 }
                 $this->Ln();
@@ -870,7 +901,7 @@ class InvoicePrinter extends tFPDF
                         1,
                         0,
                         'C',
-                        true
+                        0
                     );
                 }
                 $this->Ln();
@@ -905,7 +936,7 @@ class InvoicePrinter extends tFPDF
                         $this->SetFillColor($this->color[0], $this->color[1], $this->color[2]);
                     }
                     $this->SetFont($this->font, 'b', 8);
-                    $this->Cell(1, $cellHeight, '', 0, 0, 'L', 1);
+                    $this->Cell(1, $cellHeight, '', 0, 0, 'L', 0);
                     $this->Cell(
                         $width_other - 1,
                         $cellHeight,
@@ -913,7 +944,7 @@ class InvoicePrinter extends tFPDF
                         0,
                         0,
                         'L',
-                        1
+                        0
                     );
                     $this->Cell($this->columnSpacing, $cellHeight, '', 0, 0, 'L', 0);
                     $this->SetFont($this->font, 'b', 8);
@@ -922,7 +953,7 @@ class InvoicePrinter extends tFPDF
                         $this->SetTextColor(255, 255, 255);
                         $this->SetFillColor($this->color[0], $this->color[1], $this->color[2]);
                     }
-                    $this->Cell($width_other, $cellHeight, $total['value'], 0, 0, 'C', 1);
+                    $this->Cell($width_other, $cellHeight, $total['value'], 0, 0, 'C', 0);
                     $this->Ln();
                     $this->Ln($this->columnSpacing);
                 }
