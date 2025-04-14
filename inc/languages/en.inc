@@ -3,6 +3,7 @@
     $lang['date']     = 'Billing date';
     $lang['time']     = 'Billing time';
     $lang['due']      = 'Due date';
+    $lang['due_fill'] = 'Date of performance';
     $lang['to']       = 'Customer';
     $lang['from']     = 'Seller';
     $lang['product']  = 'Product';
